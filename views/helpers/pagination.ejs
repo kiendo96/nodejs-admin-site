@@ -1,0 +1,56 @@
+<% 
+    paginationHelpers=(paginationOjb)=> {
+        let totalItems          = paginationOjb.totalItems;
+        let totalItemsPerPage   = paginationOjb.totalItemsPerPage;
+        let totalPage           = Math.ceil(totalItems/totalItemsPerPage);
+        let currentPage         = pagination.currentPage;
+        let toPage              = totalItemsPerPage * currentPage;
+        let fromPage            = toPage - totalItemsPerPage + 1
+        if(toPage > totalItems ) toPage = totalItems;
+
+        let xhtmlPaination = '';
+        let xhtmlStart = '<li class="disabled"><a>Start</a></li>';
+        let xhtmlPrevious = '<li class="disabled"><a>Previous</a></li>';
+        let xhtmlPage = '';
+        let xhtmlNext = '<li class="disabled"><a>Next</a></li>';
+        let xhtmlEnd = '<li class="disabled"><a>End</a></li>';
+        let link = systemConfig.prefixAdmin + '/item';
+
+        if(currentPage > 1){
+            xhtmlStart = `<li><a a href="${link}?page=1">Start</a></li>`;
+            xhtmlPrevious = `<li><a a href="${link}?page=${currentPage - 1}">Previous</a></li>`;
+        }
+        if(currentPage < totalPage){
+            xhtmlEnd = `<li><a a href="${link}?page=${totalPage}">End</a></li>`;
+            xhtmlNext = `<li><a a href="${link}?page=${currentPage +1 }">Next</a></li>`;
+        }
+        for(let i = 1; i <= totalPage; i++){
+            if(i == currentPage) {
+                xhtmlPage += `<li class="active"><a>${i}</a></li>`;
+            }else {
+                xhtmlPage += `<li><a href="${link}?page=${i}">${i}</a></li>`;
+            }
+            
+        }
+        xhtmlPaination = '<ul class="pagination text-center">' + xhtmlStart + xhtmlPrevious + xhtmlPage + xhtmlNext + xhtmlEnd + '</ul>';
+
+        return `
+        <div class="panel panel-info" id="pagination">
+            <div class="panel-heading">
+                Pagination
+                <span>^</span>
+                <span class="label label-warning">Total pages: ${totalPage}</span>
+                <span class="label label-danger">Total elements: ${totalItems}</span>
+            </div>
+            <div class="panel-body">
+                <div class="infor-pagination">
+                    <p>Number of elements on the page: <span>${totalItemsPerPage}</span></p>
+                    <p>Showing <span> ${fromPage} </span> to <span> ${toPage} </span> of <span>${totalItems}</span> elements</p>
+                </div>
+                <div class="ad-pagination">
+                    ${xhtmlPaination}
+                </div>
+            </div>
+        </div>`;
+    }
+%>

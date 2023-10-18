@@ -1,0 +1,14 @@
+<!-- Reuse status on more page -->
+<%
+    statusHelper = (status, link) => {
+        let xthmlStatus = '';
+        if(status=="active"){
+            xthmlStatus = '<span class="label label-success">active</span>';
+        }else if(status=="inactive"){
+            xthmlStatus = '<span class="label label-warning">inactive</span>'
+        }
+        return`
+        <a href="${link}">${xthmlStatus}</a>
+        `;
+    }
+%>
